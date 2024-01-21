@@ -1,0 +1,28 @@
+include:
+  - project: infra/ci-templates
+    file: "commit.yml"
+    ref: master
+  - project: infra/ci-templates
+    file: "python.yml"
+    ref: master
+    inputs:
+      srcfolder: "servciceberg"
+      docker_image: python:3.11
+  - project: infra/ci-templates
+    file: "python_pypi.yml"
+    ref: master
+    inputs:
+      docker_image: python:3.11
+
+stages:
+  - lint
+  - test
+  - tag
+  - release
+
+unit tests:
+  before_script:
+    - pip install coverage
+    - pip install --no-cache-dir -r requirements.txt
+    - coverage run --concurrency=multiprocessing -m unittest tests/*.py || true
+    - ./build_pyiceberg.sh

@@ -1,0 +1,3 @@
+-i https://pypi.org/simple
+servc==0.4.4
+pyiceberg[pandas,sql-postgres]==0.5.1
